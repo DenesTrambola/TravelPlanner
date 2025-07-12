@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if form.instance.id %}Редагувати запис журналу{% else %}Додати запис у журнал{% endif %}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{% if form.instance.id %}Редагувати запис журналу{% else %}Додати запис у журнал{% endif %} для {{ trip.title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.entry_date.label_tag }}
+            {{ form.entry_date }}
+            {{ form.entry_date.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.content.label_tag }}
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary">Зберегти</button>
+        <a href="{% url 'trips:journal' trip.id %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+{% endblock %}

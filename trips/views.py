@@ -22,6 +22,14 @@ class TripForm(forms.ModelForm):
             'description': 'Опис',
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+        if start_date and end_date and end_date < start_date:
+            raise forms.ValidationError("Дата завершення не може бути раніше дати початку.")
+        return cleaned_data
+
 # Форма для створення/редагування запису журналу
 class JournalEntryForm(forms.ModelForm):
     class Meta:
@@ -49,6 +57,8 @@ def create_trip(request):
             form.save()
             messages.success(request, 'Поїздку успішно створено!')
             return redirect('trips:trip_list')
+        else:
+            messages.error(request, 'Будь ласка, виправте помилки у формі.')
     else:
         form = TripForm()
     return render(request, 'trips/create_trip.html', {'form': form})
@@ -62,6 +72,8 @@ def edit_trip(request, trip_id):
             form.save()
             messages.success(request, 'Поїздку успішно відредаговано!')
             return redirect('trips:trip_list')
+        else:
+            messages.error(request, 'Будь ласка, виправте помилки у формі.')
     else:
         form = TripForm(instance=trip)
     return render(request, 'trips/create_trip.html', {'form': form, 'trip': trip})
@@ -92,6 +104,8 @@ def add_journal_entry(request, trip_id):
             entry.save()
             messages.success(request, 'Запис у журналі створено!')
             return redirect('trips:journal', trip_id=trip.id)
+        else:
+            messages.error(request, 'Будь ласка, виправте помилки у формі.')
     else:
         form = JournalEntryForm()
     return render(request, 'trips/add_journal_entry.html', {'form': form, 'trip': trip})
@@ -105,6 +119,8 @@ def edit_journal_entry(request, entry_id):
             form.save()
             messages.success(request, 'Запис у журналі відредаговано!')
             return redirect('trips:journal', trip_id=entry.trip.id)
+        else:
+            messages.error(request, 'Будь ласка, виправте помилки у формі.')
     else:
         form = JournalEntryForm(instance=entry)
     return render(request, 'trips/add_journal_entry.html', {'form': form, 'trip': entry.trip})

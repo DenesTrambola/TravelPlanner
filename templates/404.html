@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Сторінка не знайдена{% endblock %}
+
+{% block content %}
+    <div class="text-center mt-5">
+        <h1 class="display-1">404</h1>
+        <h2>Сторінку не знайдено</h2>
+        <p class="lead">Вибачте, але сторінка, яку ви шукаєте, не існує або була переміщена.</p>
+        <a href="{% url 'trips:trip_list' %}" class="btn btn-primary mt-3">Повернутися до списку поїздок</a>
+    </div>
+{% endblock %}

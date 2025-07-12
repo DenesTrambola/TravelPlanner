@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Журнал подорожі: {{ trip.title }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Журнал подорожі: {{ trip.title }}</h1>
+    <a href="{% url 'trips:trip_list' %}" class="btn btn-secondary mb-3">Назад до списку</a>
+    <a href="{% url 'trips:add_journal_entry' trip.id %}" class="btn btn-primary mb-3">Додати запис</a>
+    {% if entries %}
+        <div class="card mb-3">
+            {% for entry in entries %}
+                <div class="card-body">
+                    <h5 class="card-title">Запис від {{ entry.entry_date }}</h5>
+                    <p class="card-text">{{ entry.content }}</p>
+                    <a href="{% url 'trips:edit_journal_entry' entry.id %}" class="btn btn-sm btn-warning">Редагувати</a>
+                    <a href="{% url 'trips:delete_journal_entry' entry.id %}" class="btn btn-sm btn-danger">Видалити</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Записів у журналі ще немає. Додайте перший!</p>
+    {% endif %}
+{% endblock %}

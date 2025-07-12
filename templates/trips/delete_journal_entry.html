@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Видалити запис журналу{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Видалити запис журналу</h1>
+    <p>Ви впевнені, що хочете видалити запис від {{ entry.entry_date }} для "{{ trip.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Так, видалити</button>
+        <a href="{% url 'trips:journal' trip.id %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+{% endblock %}

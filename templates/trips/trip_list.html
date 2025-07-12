@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Список запланованих поїздок{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Список запланованих поїздок</h1>
+    <a href="{% url 'trips:create_trip' %}" class="btn btn-primary mb-3">Створити нову поїздку</a>
+    {% if trips %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Місце призначення</th>
+                    <th>Дата початку</th>
+                    <th>Дата завершення</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in trips %}
+                    <tr>
+                        <td><a href="{% url 'trips:journal' trip.id %}">{{ trip.title }}</a></td>
+                        <td>{{ trip.destination }}</td>
+                        <td>{{ trip.start_date }}</td>
+                        <td>{{ trip.end_date }}</td>
+                        <td>
+                            <a href="{% url 'trips:edit_trip' trip.id %}" class="btn btn-sm btn-warning">Редагувати</a>
+                            <a href="{% url 'trips:delete_trip' trip.id %}" class="btn btn-sm btn-danger">Видалити</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Поїздок ще немає. Створіть першу!</p>
+    {% endif %}
+{% endblock %}
